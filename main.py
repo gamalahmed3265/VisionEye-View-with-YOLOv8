@@ -16,11 +16,7 @@ def rescale_frame(frame, percent=75):
     return cv2.resize(frame, dim, interpolation=cv2.INTER_AREA)
 
 
-
-url=r"C:\Projects\ccomputer vision\Computer-Vision-labs\70.Image Augmentation with Imgaug\assets"
-vidoeUrl=f'{url}/Vehicle detection and counting.mp4'
-
-# vidoeUrl="..."
+vidoeUrl="..."
 cap=cv2.VideoCapture(vidoeUrl)
 
 w, h, fps = (int(cap.get(x)) for x in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS))
@@ -38,18 +34,14 @@ while cap.isOpened():
     
     results=model.predict(frame)
     print("^"*40)
-    print(results[0].boxes)
-    print("^"*40)
     boxes =results[0].boxes.xyxy.cpu()
     print("results XYXY",boxes )
     clss=results[0].boxes.cls.cpu()
     print("CLASS",clss)
-    conf=results[0].boxes.conf.cpu()
-    print("conf:",conf)
     
     annotator=Annotator(frame,line_width=2)
     for box, cls in zip(boxes, clss):
-        annotator.box_label(box,confs=9 ,label=names[int(cls)], color=colors(int(cls)))
+        annotator.box_label(box, label=names[int(cls)], color=colors(int(cls)))
         annotator.visioneye(box, center_point)
 
     cv2.imshow("visioneye-pinpoint",frame)
