@@ -3,3 +3,5 @@
 *.gitignore
 *.pt
 .pt
+.avi
+*..avi

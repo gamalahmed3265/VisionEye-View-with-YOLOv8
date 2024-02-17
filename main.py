@@ -16,12 +16,13 @@ def rescale_frame(frame, percent=75):
     return cv2.resize(frame, dim, interpolation=cv2.INTER_AREA)
 
 
+
 vidoeUrl="..."
 cap=cv2.VideoCapture(vidoeUrl)
 
 w, h, fps = (int(cap.get(x)) for x in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS))
 
-# out = cv2.VideoWriter('visioneye-pinpoint.avi', cv2.VideoWriter_fourcc(*'MJPG'), fps, (w, h))
+out = cv2.VideoWriter('visioneye-pinpoint.avi', cv2.VideoWriter_fourcc(*'MJPG'), fps, (w, h))
 
 
 center_point = (-10, h)
@@ -43,13 +44,14 @@ while cap.isOpened():
     for box, cls in zip(boxes, clss):
         annotator.box_label(box, label=names[int(cls)], color=colors(int(cls)))
         annotator.visioneye(box, center_point)
-
+    
+    out.write(frame)
     cv2.imshow("visioneye-pinpoint",frame)
     
     key=cv2.waitKey(1)
     if key==ord("q"):
         break
-
+out.release()
 cap.release()
 cv2.destroyAllWindows()
 
